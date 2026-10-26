@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оплата заказа</title>
+  <meta name="description" content="Оплата перевода через Систему быстрых платежей (СБП) по QR-коду">
+  <meta name="theme-color" content="#10141d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F4510B'/%3E%3Cg fill='%23fff'%3E%3Crect x='14' y='14' width='10' height='10' rx='2'/%3E%3Crect x='40' y='14' width='10' height='10' rx='2'/%3E%3Crect x='14' y='40' width='10' height='10' rx='2'/%3E%3Crect x='30' y='30' width='6' height='6' rx='1.5'/%3E%3Crect x='40' y='40' width='4' height='4' rx='1'/%3E%3Crect x='46' y='46' width='4' height='4' rx='1'/%3E%3Crect x='40' y='30' width='4' height='4' rx='1'/%3E%3Crect x='30' y='40' width='4' height='4' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+  <div class="glow glow--one" aria-hidden="true"></div>
+  <div class="glow glow--two" aria-hidden="true"></div>
+
+  <main class="page">
+    <section class="card" aria-labelledby="page-title">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g fill="#fff">
+              <rect x="8" y="8" width="16" height="16" rx="3"/>
+              <rect x="40" y="8" width="16" height="16" rx="3"/>
+              <rect x="8" y="40" width="16" height="16" rx="3"/>
+              <rect x="28" y="28" width="8" height="8" rx="2"/>
+              <rect x="40" y="40" width="6" height="6" rx="1.5"/>
+              <rect x="50" y="50" width="6" height="6" rx="1.5"/>
+              <rect x="40" y="28" width="6" height="6" rx="1.5"/>
+              <rect x="28" y="40" width="6" height="6" rx="1.5"/>
+            </g>
+          </svg>
+        </span>
+        <span class="brand__label">Оплата по СБП</span>
+      </div>
+
+      <h1 class="title" id="page-title">Оплата заказа</h1>
+      <p class="subtitle" id="subtitle">Безопасный перевод через Систему быстрых платежей&nbsp;— по QR-коду из приложения вашего банка</p>
+
+      <form class="form" id="pay-form" novalidate>
+        <label class="field-label" for="amount">Сумма перевода</label>
+        <div class="amount-field">
+          <input
+            class="amount-input"
+            id="amount"
+            name="amount"
+            type="text"
+            inputmode="decimal"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="0"
+            aria-describedby="amount-hint round-note amount-error"
+          >
+          <span class="amount-currency" aria-hidden="true">₽</span>
+        </div>
+        <p class="hint" id="amount-hint">Копейки округляются вниз до целого рубля — например, 1500,90 → 1500 ₽</p>
+        <p class="error" id="amount-error" role="alert" hidden></p>
+        <p class="round-note" id="round-note" aria-live="polite" hidden>
+          <svg viewBox="0 0 20 20" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 9.2v3.6m0-6h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span id="round-note-text"></span>
+        </p>
+
+        <button class="pay-button" id="pay-button" type="submit">
+          <span class="pay-button__label">Перейти к оплате</span>
+          <svg class="pay-button__arrow" viewBox="0 0 20 20" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3.5 10h12m0 0-4.5-4.5M15.5 10 11 14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="pay-button__spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <div class="setup-warning" id="setup-warning" hidden tabindex="-1">
+        <svg viewBox="0 0 20 20" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10 6.5v4m0 3h.01M8.6 3.2 2.4 14a1.6 1.6 0 0 0 1.4 2.4h12.4a1.6 1.6 0 0 0 1.4-2.4L11.4 3.2a1.6 1.6 0 0 0-2.8 0Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Ссылка СБП ещё не подключена. Откройте файл <code>config.js</code> и вставьте вашу ссылку&nbsp;QR в переменную <code>SBP_QR_LINK</code>.</span>
+      </div>
+
+      <ul class="badges" aria-label="Преимущества">
+        <li class="badge">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 2.5 4 5v4.2c0 3.6 2.5 6.4 6 8.3 3.5-1.9 6-4.7 6-8.3V5l-6-2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="m7.5 9.8 1.8 1.8 3.2-3.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Безопасная оплата
+        </li>
+        <li class="badge">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M11 2.5 4.5 11h4l-1 6.5L14 9h-4l1-6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          Мгновенное зачисление
+        </li>
+      </ul>
+    </section>
+
+    <p class="footer-note">
+      <svg viewBox="0 0 20 20" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="4" y="8.5" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M7 8.5V6.5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Оплата проходит на защищённой странице <b>qr.nspk.ru</b> — официальном сервисе СБП
+    </p>
+  </main>
+
+  <!-- При изменении style.css / config.js / app.js увеличьте v=2 до v=3,
+       чтобы браузеры посетителей не использовали старую копию из кеша -->
+  <script src="config.js?v=2"></script>
+  <script src="app.js?v=2"></script>
+</body>
+</html>

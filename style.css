@@ -1,0 +1,437 @@
+/* ============================================================
+   QRWeb — страница оплаты по СБП
+   Тёмная приглушённая тема — комфортна для глаз ночью
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  --bg-top: #10141d;
+  --bg-bottom: #0b0e15;
+  --surface: #151b28;
+  --surface-input: #10151f;
+  --text: #dfe4ec;
+  --text-secondary: #a6afc0;
+  --text-muted: #828b9e;
+  --border: #262f42;
+  --border-strong: #34405a;
+
+  --primary-1: #b04a17;
+  --primary-2: #93390d;
+  --primary-deep: #7a2f0b;
+  --primary-ring: rgba(206, 112, 51, 0.24);
+
+  --warning-bg: #201a10;
+  --warning-border: #443518;
+  --warning-text: #d8b26c;
+
+  --error: #e2867e;
+
+  --accent-soft: #cf7b3f; /* приглушённый оранжевый для иконок */
+
+  --radius-card: 24px;
+  --radius-field: 14px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 24px 48px -18px rgba(0, 0, 0, 0.55);
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Атрибут hidden всегда сильнее авторских display */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)) fixed;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(206, 112, 51, 0.35);
+}
+
+/* Едва заметные цветовые пятна на фоне */
+.glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(110px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow--one {
+  width: 520px;
+  height: 520px;
+  top: -200px;
+  right: -140px;
+  background: radial-gradient(circle, rgba(206, 112, 51, 0.08), transparent 70%);
+}
+
+.glow--two {
+  width: 560px;
+  height: 560px;
+  bottom: -240px;
+  left: -180px;
+  background: radial-gradient(circle, rgba(86, 114, 178, 0.07), transparent 70%);
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+/* ---------- Карточка ---------- */
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 36px 32px 32px;
+  animation: card-in 0.45s var(--ease) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6);
+}
+
+.brand__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.subtitle {
+  margin-top: 8px;
+  font-size: 14.5px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Форма ---------- */
+
+.form {
+  margin-top: 28px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.amount-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.amount-input {
+  width: 100%;
+  height: 58px;
+  padding: 0 48px 0 16px;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface-input);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-field);
+  outline: none;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease),
+    background-color 0.18s var(--ease);
+}
+
+.amount-input::placeholder {
+  color: #5b6478;
+  font-weight: 500;
+}
+
+.amount-input:hover {
+  border-color: var(--border-strong);
+}
+
+.amount-input:focus {
+  background: var(--surface);
+  border-color: var(--primary-1);
+  box-shadow: 0 0 0 4px var(--primary-ring);
+}
+
+.amount-input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.amount-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 4px rgba(226, 134, 126, 0.14);
+}
+
+.amount-currency {
+  position: absolute;
+  right: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #5b6478;
+  pointer-events: none;
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.error {
+  margin-top: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--error);
+}
+
+/* Предупреждение об округлении копеек вниз */
+.round-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--warning-text);
+}
+
+.round-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ---------- Кнопка ---------- */
+
+.pay-button {
+  margin-top: 20px;
+  width: 100%;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: inherit;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #f5f0ec;
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2) 55%, var(--primary-deep));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-field);
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.65);
+  transition: transform 0.15s var(--ease), box-shadow 0.2s var(--ease),
+    filter 0.2s var(--ease);
+}
+
+.pay-button:hover:not(:disabled) {
+  filter: brightness(1.12);
+  box-shadow: 0 12px 26px -12px rgba(0, 0, 0, 0.7);
+}
+
+.pay-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.pay-button:focus-visible {
+  outline: 3px solid var(--primary-ring);
+  outline-offset: 2px;
+}
+
+.pay-button:disabled {
+  cursor: default;
+  filter: saturate(0.75) brightness(0.92);
+}
+
+.pay-button__spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #f5f0ec;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.pay-button.is-loading .pay-button__spinner {
+  display: inline-block;
+}
+
+.pay-button.is-loading .pay-button__arrow {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Предупреждение о настройке ---------- */
+
+.setup-warning {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--warning-text);
+  outline: none;
+}
+
+.setup-warning svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.setup-warning code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: rgba(216, 178, 108, 0.12);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+/* ---------- Бейджи ---------- */
+
+.badges {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.badge {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: #1a2130;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge svg {
+  color: var(--accent-soft);
+  flex-shrink: 0;
+}
+
+/* ---------- Подпись под карточкой ---------- */
+
+.footer-note {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  max-width: 420px;
+  margin-top: 22px;
+  font-size: 12.5px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.footer-note b {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 400px) {
+  .card {
+    padding: 28px 20px 24px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 23px;
+  }
+}
+
+/* ---------- Уважение к reduced-motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
